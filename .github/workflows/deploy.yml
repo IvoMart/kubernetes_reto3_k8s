@@ -32,6 +32,15 @@ jobs:
     needs: build-and-push-DockerHub
     runs-on: self-hosted
     steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Mostrar contenido del repo
+      run: |
+        pwd
+        ls -la
+        ls -la k8s || echo "Directorio 'k8s' no encontrado"
+  
     - name: Set KUBECONFIG
       run: |
         echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
