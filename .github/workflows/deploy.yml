@@ -1,0 +1,41 @@
+name: Build and Deploy to Kubernetes
+
+on:
+  push:
+    branches:
+      [ main ]
+
+jobs:
+  build-and-push-DockerHub:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build Docker image
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/reto3-k8s-app:latest .
+    
+    - name: Push Docker image
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/reto3-k8s-app:latest
+
+  deploy-to-minikube:
+    needs: build-and-push-DockerHub
+    runs-on: self-hosted
+    steps:
+    - name: Set KUBECONFIG
+      run: |
+        echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
+
+    - name: Apply Kubernetes manifests
+      run: |
+        kubectl apply -f ./k8s
