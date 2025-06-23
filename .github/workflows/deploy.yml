@@ -35,12 +35,6 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v3
 
-    - name: Mostrar contenido del repo
-      run: |
-        pwd
-        ls -la
-        ls -la k8s || echo "Directorio 'k8s' no encontrado"
- 
     - name: Apply Kubernetes manifests
       run: |
         kubectl apply -f k8s
