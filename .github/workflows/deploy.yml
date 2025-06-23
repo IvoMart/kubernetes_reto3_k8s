@@ -40,11 +40,9 @@ jobs:
         pwd
         ls -la
         ls -la k8s || echo "Directorio 'k8s' no encontrado"
-  
-    - name: Set KUBECONFIG
-      run: |
-        echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
-
+ 
     - name: Apply Kubernetes manifests
       run: |
         kubectl apply -f k8s
+      env:
+        KUBECONFIG: /home/ivomart/.kube/config
