@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: reto3-k8s-app
+  template:
+    metadata:
+      labels:
+        app: reto3-k8s-app
+    spec:
+      containers:
+      - name: reto3-k8s-app
+        image: DOCKER_USERNAME/reto3-k8s-app:latest
+        ports:
+        - containerPort: 3000
