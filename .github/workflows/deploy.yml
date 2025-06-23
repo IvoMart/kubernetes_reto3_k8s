@@ -45,4 +45,4 @@ jobs:
       run: |
         kubectl apply -f k8s
       env:
-        KUBECONFIG: /home/ivomart/.kube/config
+        KUBECONFIG: ${HOME}/.kube/config
